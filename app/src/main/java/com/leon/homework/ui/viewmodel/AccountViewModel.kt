@@ -4,8 +4,9 @@ import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.leon.homework.data.repository.AccountRepository
 
-class AccountViewModel : ViewModel() {
+class AccountViewModel(private val accountRepository: AccountRepository) : ViewModel() {
     private val _emailError = MutableLiveData("")
     val emailError: LiveData<String> = _emailError
 

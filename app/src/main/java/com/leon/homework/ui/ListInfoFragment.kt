@@ -41,8 +41,6 @@ class ListInfoFragment : Fragment() {
             newsAdapter.submitList(newsList)
         })
 
-        viewModel.fetchLatestNews()
-
         return binding.root
     }
 }

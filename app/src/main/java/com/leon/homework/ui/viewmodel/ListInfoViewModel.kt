@@ -1,5 +1,7 @@
 package com.leon.homework.ui.viewmodel
 
+import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,14 +12,18 @@ import kotlinx.coroutines.launch
 
 class ListInfoViewModel(private val newsRepository: NewsRepository) : ViewModel() {
 
-    val news: MutableLiveData<List<News>> = MutableLiveData()
+    private val _news = MutableLiveData<List<News>>()
+    val news: LiveData<List<News>> = _news
 
-    fun fetchLatestNews() {
+    init {
         viewModelScope.launch {
-            val result = newsRepository.fetchLatestNews()
-
-            if (result is HttpResult.Success) {
-                news.value = result.data.body()?.news
+            when (val result = newsRepository.fetchLatestNews()) {
+                is HttpResult.Success -> {
+                    _news.value = result.data.news
+                }
+                is HttpResult.Error -> {
+                    // TODO:
+                }
             }
         }
     }

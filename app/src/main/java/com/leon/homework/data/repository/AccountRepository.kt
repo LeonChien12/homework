@@ -31,10 +31,10 @@ class AccountRepository(private val accountRemoteDataSource: AccountRemoteDataSo
 
     suspend fun updateTimeZone(timezone: String): HttpResult<ResponseBody> {
         return try {
-            user?.let { loggedInResponse ->
+            user?.let { loggedInUser ->
                 val response = accountRemoteDataSource.updateTimezone(
-                    loggedInResponse.sessionToken,
-                    loggedInResponse.objectId,
+                    loggedInUser.sessionToken,
+                    loggedInUser.objectId,
                     TimeZoneRequest(timezone)
                 )
 

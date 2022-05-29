@@ -4,6 +4,9 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.leon.homework.ui.viewmodel.AccountViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,6 +21,33 @@
             android:src="@drawable/ic_baseline_arrow_back_24"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/account_email(@string/prompt_email, viewModel.loggedInUser.email)}"
+            app:layout_constraintBottom_toTopOf="@id/spinner_timezone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.85" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spinner_timezone"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_spinner"
+            android:spinnerMode="dropdown"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_default="percent"
+            app:layout_constraintHeight_percent="0.08"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_default="percent"
+            app:layout_constraintWidth_percent="0.75"
+            app:selectionPosition="@={viewModel.selectedPosition}"
+            app:setList="@{viewModel.timeZoneIDs}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

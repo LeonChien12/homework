@@ -2,6 +2,8 @@ package com.leon.homework.ui.viewmodel
 
 import android.util.Log
 import android.util.Patterns
+import androidx.databinding.Observable
+import androidx.databinding.ObservableInt
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.leon.homework.R
 import com.leon.homework.data.HttpResult
 import com.leon.homework.data.repository.AccountRepository
+import com.leon.homework.ui.LoggedInUserView
 import com.leon.homework.ui.LoginResult
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -21,6 +24,26 @@ class AccountViewModel(private val accountRepository: AccountRepository) : ViewM
 
     private val _loginResult = MutableSharedFlow<LoginResult>()
     val loginResult: SharedFlow<LoginResult> = _loginResult
+
+    private val _loggedInUser = MutableLiveData(LoggedInUserView("", "Asia/Taipei"))
+    val loggedInUser: LiveData<LoggedInUserView> = _loggedInUser
+
+    lateinit var timeZoneIDs: List<String>
+
+    val selectedPosition = ObservableInt()
+
+    init {
+        viewModelScope.launch {
+            timeZoneIDs = accountRepository.getTimeZoneIDs()
+        }
+
+        selectedPosition.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                updateTimezone(selectedPosition.get())
+            }
+        })
+    }
 
     fun login(email: String, password: String) {
         viewModelScope.launch {
@@ -37,6 +60,11 @@ class AccountViewModel(private val accountRepository: AccountRepository) : ViewM
             _isLoading.value = false
             when (result) {
                 is HttpResult.Success -> {
+                    _loggedInUser.value = LoggedInUserView(
+                        result.data.reportEmail,
+                        result.data.timeZone
+                    )
+                    selectedPosition.set(timeZoneIDs.indexOf(result.data.timeZone))
                     _loginResult.emit(LoginResult(isLoginSuccess = true))
                 }
                 is HttpResult.Error -> {
@@ -48,6 +76,26 @@ class AccountViewModel(private val accountRepository: AccountRepository) : ViewM
                             _loginResult.emit(LoginResult(errorId = R.string.login_failed))
                         }
                     }
+                }
+            }
+        }
+    }
+
+    private fun updateTimezone(pos: Int) {
+        viewModelScope.launch {
+            _loggedInUser.value?.let { user ->
+                if (user.timeZone != timeZoneIDs[pos]) {
+                    user.timeZone = timeZoneIDs[pos]
+                    when (val result = accountRepository.updateTimeZone(user.timeZone)) {
+                        is HttpResult.Success -> {
+                            // Update timezone success
+                        }
+                        is HttpResult.Error -> {
+                            // Update timezone failed
+                        }
+                    }
+                } else {
+                    // No need to update time zone
                 }
             }
         }

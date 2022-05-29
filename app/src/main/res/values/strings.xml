@@ -5,4 +5,6 @@
     <string name="action_login">Login</string>
     <string name="login_failed">"Login failed"</string>
     <string name="network_error">A network error occurred.</string>
+    <string name="news_chtmessage">Message: %s</string>
+    <string name="news_content">Content: %s</string>
 </resources>

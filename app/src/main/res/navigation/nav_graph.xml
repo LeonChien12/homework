@@ -9,5 +9,18 @@
         android:id="@+id/loginFragment"
         android:name="com.leon.homework.ui.LoginFragment"
         android:label="LoginFragment"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login">
+
+        <action
+            android:id="@+id/action_login_to_list_info"
+            app:destination="@+id/listInfoFragment"
+            app:popUpTo="@+id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/listInfoFragment"
+        android:name="com.leon.homework.ui.ListInfoFragment"
+        android:label="ListInfoFragment"
+        tools:layout="@layout/fragment_list_info" />
 </navigation>

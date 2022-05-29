@@ -9,7 +9,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
+import com.leon.homework.R
 import com.leon.homework.databinding.FragmentLoginBinding
 import com.leon.homework.ui.viewmodel.AccountViewModel
 import com.leon.homework.ui.viewmodel.ViewModelFactory
@@ -41,7 +43,8 @@ class LoginFragment : Fragment() {
                 .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
                 .collect { result ->
                     if (result.isLoginSuccess) {
-                        // TODO: Navigate to ListInfoFragment
+                        Navigation.findNavController(binding.root)
+                            .navigate(R.id.action_login_to_list_info)
                     } else {
                         Snackbar.make(binding.root, result.errorId, Snackbar.LENGTH_LONG).show()
                     }

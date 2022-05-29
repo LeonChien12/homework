@@ -3,8 +3,11 @@ package com.leon.homework.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.leon.homework.data.api.AccountService
+import com.leon.homework.data.api.NewsService
 import com.leon.homework.data.repository.AccountRepository
+import com.leon.homework.data.repository.NewsRepository
 import com.leon.homework.data.source.AccountRemoteDataSource
+import com.leon.homework.data.source.NewsRemoteDataSource
 
 class ViewModelFactory : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
@@ -15,6 +18,13 @@ class ViewModelFactory : ViewModelProvider.Factory {
                     accountRepository = AccountRepository(
                         accountRemoteDataSource = AccountRemoteDataSource(
                             accountService = AccountService.create()
+                        )
+                    )
+                )
+                isAssignableFrom(ListInfoViewModel::class.java) -> ListInfoViewModel(
+                    newsRepository = NewsRepository(
+                        newsRemoteDataSource = NewsRemoteDataSource(
+                            newsService = NewsService.create()
                         )
                     )
                 )

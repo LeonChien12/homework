@@ -22,5 +22,21 @@
         android:id="@+id/listInfoFragment"
         android:name="com.leon.homework.ui.ListInfoFragment"
         android:label="ListInfoFragment"
-        tools:layout="@layout/fragment_list_info" />
+        tools:layout="@layout/fragment_list_info">
+
+        <action
+            android:id="@+id/action_list_info_to_update_users"
+            app:destination="@+id/updateUsersFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/updateUsersFragment"
+        android:name="com.leon.homework.ui.UpdateUsersFragment"
+        android:label="UpdateUsersFragment"
+        tools:layout="@layout/fragment_update_users">
+
+        <action
+            android:id="@+id/action_update_users_to_list_info"
+            app:popUpTo="@+id/listInfoFragment" />
+    </fragment>
 </navigation>

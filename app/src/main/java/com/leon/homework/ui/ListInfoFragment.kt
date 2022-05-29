@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
+import com.leon.homework.R
 import com.leon.homework.databinding.FragmentListInfoBinding
 import com.leon.homework.ui.adapter.NewsAdapter
 import com.leon.homework.ui.viewmodel.ListInfoViewModel
@@ -35,6 +37,18 @@ class ListInfoFragment : Fragment() {
 
         newsAdapter = NewsAdapter()
         binding.listView.adapter = newsAdapter
+
+        binding.toolbarInfoList.inflateMenu(R.menu.list_info_toolbar)
+        binding.toolbarInfoList.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.action_timezone -> {
+                    Navigation.findNavController(binding.root)
+                        .navigate(R.id.action_list_info_to_update_users)
+                    true
+                }
+                else -> false
+            }
+        }
 
         viewModel.news.observe(viewLifecycleOwner, Observer {
             val newsList = it ?: return@Observer

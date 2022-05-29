@@ -14,6 +14,10 @@
         <action
             android:id="@+id/action_login_to_list_info"
             app:destination="@+id/listInfoFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@+id/loginFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -22,21 +26,38 @@
         android:id="@+id/listInfoFragment"
         android:name="com.leon.homework.ui.ListInfoFragment"
         android:label="ListInfoFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim"
         tools:layout="@layout/fragment_list_info">
 
         <action
             android:id="@+id/action_list_info_to_update_users"
-            app:destination="@+id/updateUsersFragment" />
+            app:destination="@+id/updateUsersFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
     </fragment>
 
     <fragment
         android:id="@+id/updateUsersFragment"
         android:name="com.leon.homework.ui.UpdateUsersFragment"
         android:label="UpdateUsersFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim"
         tools:layout="@layout/fragment_update_users">
 
         <action
             android:id="@+id/action_update_users_to_list_info"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@+id/listInfoFragment" />
     </fragment>
 </navigation>

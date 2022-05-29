@@ -42,13 +42,21 @@ class LoginFragment : Fragment() {
             viewModel.loginResult
                 .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
                 .collect { result ->
-                    if (result.isLoginSuccess) {
-                        Navigation.findNavController(binding.root)
-                            .navigate(R.id.action_login_to_list_info)
-                    } else {
-                        Snackbar.make(binding.root, result.errorId, Snackbar.LENGTH_LONG).show()
+                    when {
+                        result.emailErrorId != R.string.no_error -> {
+                            binding.edtEmail.error = resources.getText(result.emailErrorId)
+                        }
+                        result.passwordErrorId != R.string.no_error -> {
+                            binding.edtPassword.error = resources.getText(result.passwordErrorId)
+                        }
+                        result.isLoginSuccess -> {
+                            Navigation.findNavController(binding.root)
+                                .navigate(R.id.action_login_to_list_info)
+                        }
+                        else -> {
+                            Snackbar.make(binding.root, result.errorId, Snackbar.LENGTH_LONG).show()
+                        }
                     }
-
                 }
         }
 

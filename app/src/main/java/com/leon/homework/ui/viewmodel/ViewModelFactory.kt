@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.leon.homework.data.api.AccountService
 import com.leon.homework.data.api.NewsService
+import com.leon.homework.data.model.LocalStorage
 import com.leon.homework.data.repository.AccountRepository
 import com.leon.homework.data.repository.NewsRepository
 import com.leon.homework.data.source.AccountRemoteDataSource
@@ -17,7 +18,8 @@ class ViewModelFactory : ViewModelProvider.Factory {
                 isAssignableFrom(AccountViewModel::class.java) -> AccountViewModel(
                     accountRepository = AccountRepository(
                         accountRemoteDataSource = AccountRemoteDataSource(
-                            accountService = AccountService.create()
+                            accountService = AccountService.create(),
+                            localStorage = LocalStorage
                         )
                     )
                 )

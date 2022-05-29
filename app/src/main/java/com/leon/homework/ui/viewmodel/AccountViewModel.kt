@@ -1,5 +1,6 @@
 package com.leon.homework.ui.viewmodel
 
+import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,14 +13,9 @@ import com.leon.homework.ui.LoginResult
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 class AccountViewModel(private val accountRepository: AccountRepository) : ViewModel() {
-    private val _emailError = MutableLiveData("")
-    val emailError: LiveData<String> = _emailError
-
-    private val _passwordError = MutableLiveData("")
-    val passwordError: LiveData<String> = _passwordError
-
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
 
@@ -27,22 +23,32 @@ class AccountViewModel(private val accountRepository: AccountRepository) : ViewM
     val loginResult: SharedFlow<LoginResult> = _loginResult
 
     fun login(email: String, password: String) {
-        if (!isEmailValid(email)) {
-            _emailError.value = "Not a valid email"
-            return
-        } else if (!isPasswordValid(password)) {
-            _passwordError.value = "Password must be > 5 characters"
-            return
-        }
-
         viewModelScope.launch {
+            if (!isEmailValid(email)) {
+                _loginResult.emit(LoginResult(emailErrorId = R.string.invalid_email))
+                return@launch
+            } else if (!isPasswordValid(password)) {
+                _loginResult.emit(LoginResult(passwordErrorId = R.string.invalid_password))
+                return@launch
+            }
+
             _isLoading.value = true
             val result = accountRepository.login(email, password)
             _isLoading.value = false
-            if (result is HttpResult.Success) {
-                _loginResult.emit(LoginResult(isLoginSuccess = result.data.isSuccessful))
-            } else {
-                _loginResult.emit(LoginResult(errorId = R.string.network_error))
+            when (result) {
+                is HttpResult.Success -> {
+                    _loginResult.emit(LoginResult(isLoginSuccess = true))
+                }
+                is HttpResult.Error -> {
+                    when (result.throwable) {
+                        is IOException -> {
+                            _loginResult.emit(LoginResult(errorId = R.string.network_error))
+                        }
+                        else -> {
+                            _loginResult.emit(LoginResult(errorId = R.string.login_failed))
+                        }
+                    }
+                }
             }
         }
     }

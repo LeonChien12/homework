@@ -8,16 +8,17 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.Body
+import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
 interface AccountService {
     @Headers(
         "Content-Type: application/json",
-        "X-Parse-Application-Id: vqYuKPOkLQLYHhk4QTGsGKFwATT4mBIGREI2m8eD"
     )
     @POST("login")
     suspend fun login(
+        @Header("X-Parse-Application-Id") applicationId: String,
         @Body request: LoginRequest
     ): Response<LoginResponse>
 
